@@ -1,5 +1,6 @@
 package com.example.kukufm_mihirbajpai.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,7 +22,7 @@ class LaunchViewModel @Inject constructor(private val repository: LaunchReposito
             try {
                 _launches.value = repository.getLaunches()
             } catch (e: Exception) {
-                // Handle the error appropriately
+                Log.d("LaunchViewModel", "$e")
             }
         }
     }

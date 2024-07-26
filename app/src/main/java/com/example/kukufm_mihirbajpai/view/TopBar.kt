@@ -45,6 +45,7 @@ fun TopBar(navController: NavHostController) {
                         BottomNavItem.Home.route -> "Home"
                         BottomNavItem.Search.route -> "Search"
                         BottomNavItem.Store.route -> "Store"
+                        "detail_screen/{flightNumber}" -> "Details"
                         else -> "App"
                     },
                     color = Color.White

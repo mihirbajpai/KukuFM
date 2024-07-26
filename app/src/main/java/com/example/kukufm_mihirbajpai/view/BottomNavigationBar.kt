@@ -11,16 +11,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFMPrimary
-import com.example.kukufm_mihirbajpai.ui.theme.Pink80
-import com.example.kukufm_mihirbajpai.ui.theme.PurpleGrey40
-import com.example.kukufm_mihirbajpai.ui.theme.PurpleGrey80
 
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
@@ -29,9 +25,8 @@ fun BottomNavigationBar(navController: NavHostController) {
         BottomNavItem.Search,
         BottomNavItem.Store
     )
-
-    BottomNavigation {
-        val currentRoute = currentRoute(navController)
+    val currentRoute = currentRoute(navController)
+    if (currentRoute?.contains("detail_screen") != true ) BottomNavigation {
         items.forEach { item ->
             val isSelected = currentRoute == item.route
             BottomNavigationItem(

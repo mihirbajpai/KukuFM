@@ -16,46 +16,43 @@ import androidx.compose.material.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.kukufm_mihirbajpai.R
 import com.example.kukufm_mihirbajpai.model.Launch
 import com.example.kukufm_mihirbajpai.ui.theme.BackgroundColor
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFMPrimary
-import com.example.kukufm_mihirbajpai.viewmodel.LaunchViewModel
 
 @Composable
-fun HomeScreen(viewModel: LaunchViewModel = hiltViewModel()) {
-    val launches by viewModel.launches.observeAsState(emptyList())
-
+fun HomeScreen(launches: List<Launch>, navController: NavController,) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(BackgroundColor)
     ) {
         items(launches) { launch ->
-            LaunchItem(launch)
+            LaunchItem(launch) {
+                navController.navigate("detail_screen/${launch.flight_number}")
+            }
         }
     }
 }
 
 @Composable
-fun LaunchItem(launch: Launch) {
+fun LaunchItem(launch: Launch, onClick: ()->Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-
+                onClick()
             },
         elevation = 4.dp,
         shape = MaterialTheme.shapes.medium,
@@ -97,7 +94,7 @@ fun LaunchItem(launch: Launch) {
 
 @Composable
 fun ShowText(
-    heading: String,
+    heading: String = "",
     text: String
 ){
     Row {
