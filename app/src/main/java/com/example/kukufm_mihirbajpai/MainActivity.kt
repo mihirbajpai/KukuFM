@@ -59,7 +59,9 @@ import com.example.kukufm_mihirbajpai.ui.theme.KukuFMPrimary
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFMSecondary
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFmMihirBajpaiTheme
 import com.example.kukufm_mihirbajpai.ui.theme.PurpleGrey40
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -188,9 +190,7 @@ fun NavigationGraph(navController: NavHostController, modifier: Modifier = Modif
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen() {
-    Scaffold {
-        Text("Welcome to Home Screen", modifier = Modifier.padding(16.dp))
-    }
+    LaunchListScreen()
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
