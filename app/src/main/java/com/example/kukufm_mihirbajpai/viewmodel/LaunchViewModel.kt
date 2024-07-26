@@ -17,13 +17,21 @@ class LaunchViewModel @Inject constructor(private val repository: LaunchReposito
     private val _launches = MutableLiveData<List<Launch>>()
     val launches: LiveData<List<Launch>> get() = _launches
 
+    val isLoading = MutableLiveData(true)
+
     init {
+        loadData()
+    }
+
+    fun loadData(){
+        isLoading.value = true
         viewModelScope.launch {
             try {
                 _launches.value = repository.getLaunches()
             } catch (e: Exception) {
                 Log.d("LaunchViewModel", "$e")
             }
+            isLoading.value = false
         }
     }
 }

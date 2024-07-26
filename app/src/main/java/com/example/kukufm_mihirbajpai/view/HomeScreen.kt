@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,17 +30,31 @@ import com.example.kukufm_mihirbajpai.R
 import com.example.kukufm_mihirbajpai.model.Launch
 import com.example.kukufm_mihirbajpai.ui.theme.BackgroundColor
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFMPrimary
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(launches: List<Launch>, navController: NavController,) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(BackgroundColor)
+fun HomeScreen(
+    launches: List<Launch>,
+    navController: NavController,
+    onRefresh: () -> Unit
+) {
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
+
+    SwipeRefresh(
+        state = swipeRefreshState,
+        onRefresh = { onRefresh() }
     ) {
-        items(launches) { launch ->
-            LaunchItem(launch) {
-                navController.navigate("detail_screen/${launch.flight_number}")
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(BackgroundColor)
+        ) {
+            items(launches) { launch ->
+                LaunchItem(launch) {
+                    navController.navigate("detail_screen/${launch.flight_number}")
+                }
             }
         }
     }

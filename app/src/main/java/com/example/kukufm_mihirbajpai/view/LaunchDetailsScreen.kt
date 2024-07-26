@@ -48,6 +48,8 @@ import com.example.kukufm_mihirbajpai.model.Launch
 import com.example.kukufm_mihirbajpai.ui.theme.BackgroundColor
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFMPrimary
 import com.example.kukufm_mihirbajpai.ui.theme.Purple100
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -88,7 +90,7 @@ fun LaunchDetailsScreen(launch: Launch) {
 
         ShowText(
             heading = "Launch Date: ",
-            text = launch.launch_date_utc
+            text = convertDate(launch.launch_date_utc)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -265,4 +267,18 @@ fun ClickableUrlText(heading: String, url: String) {
             maxLines = 1
         )
     }
+}
+
+fun convertDate(originalDate: String): String {
+    // Define the original format
+    val originalFormatter = DateTimeFormatter.ISO_DATE_TIME
+
+    // Define the target format
+    val targetFormatter = DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")
+
+    // Parse the original date string
+    val zonedDateTime = ZonedDateTime.parse(originalDate, originalFormatter)
+
+    // Format the parsed date to the target format
+    return zonedDateTime.format(targetFormatter)
 }
