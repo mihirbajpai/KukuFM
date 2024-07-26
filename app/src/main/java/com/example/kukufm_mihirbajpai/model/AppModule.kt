@@ -1,4 +1,4 @@
-package com.example.kukufm_mihirbajpai
+package com.example.kukufm_mihirbajpai.model
 
 import dagger.Module
 import dagger.Provides

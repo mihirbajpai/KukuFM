@@ -13,4 +13,6 @@ val Pink40 = Color(0xFF7D5260)
 val KukuFMPrimary = Color(0xFFEFEF4120)
 val KukuFMSecondary = Color(0xFF191B1F)
 
+val BackgroundColor = Color(0xFFF5F5F5)
+
 
