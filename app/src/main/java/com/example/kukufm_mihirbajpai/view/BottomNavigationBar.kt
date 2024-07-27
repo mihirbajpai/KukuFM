@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFMPrimary
@@ -47,7 +48,8 @@ fun BottomNavigationBar(navController: NavHostController) {
                         color = White,
                         modifier = Modifier.graphicsLayer(
                             alpha = if (isSelected) 1f else 0.3f
-                        )
+                        ),
+                        textDecoration = if (isSelected) TextDecoration.Underline else TextDecoration.None
                     )
                 },
                 selected = isSelected,

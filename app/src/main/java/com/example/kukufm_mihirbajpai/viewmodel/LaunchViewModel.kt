@@ -28,6 +28,7 @@ class LaunchViewModel @Inject constructor(private val repository: LaunchReposito
         viewModelScope.launch {
             try {
                 _launches.value = repository.getLaunches()
+                Log.d("LaunchViewModel", "$launches")
             } catch (e: Exception) {
                 Log.d("LaunchViewModel", "$e")
             }

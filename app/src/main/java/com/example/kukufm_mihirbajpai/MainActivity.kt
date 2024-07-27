@@ -54,24 +54,34 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun AppContainer() {
+fun AppContainer(
+    viewModel: LaunchViewModel = hiltViewModel()
+) {
     val navController = rememberNavController()
+    val isLoading by viewModel.isLoading.observeAsState(true)
     Scaffold(
         topBar = { TopBar(navController) },
-        bottomBar = { BottomNavigationBar(navController) }
+        bottomBar = {
+            if (!isLoading) BottomNavigationBar(navController)
+        }
     ) { innerPadding ->
-        NavigationGraph(navController, Modifier.padding(innerPadding))
+        NavigationGraph(
+            navController = navController,
+            viewModel = viewModel,
+            isLoading = isLoading,
+            Modifier.padding(innerPadding)
+        )
     }
 }
 
 @Composable
 fun NavigationGraph(
     navController: NavHostController,
+    viewModel: LaunchViewModel,
+    isLoading: Boolean,
     modifier: Modifier = Modifier,
-    viewModel: LaunchViewModel = hiltViewModel()
 ) {
-    val launches by viewModel.launches.observeAsState(emptyList())
-    val isLoading by viewModel.isLoading.observeAsState(true)
+    val launchesList by viewModel.launches.observeAsState(emptyList())
 
     if (isLoading) {
         Box(
@@ -88,11 +98,11 @@ fun NavigationGraph(
     } else {
         NavHost(navController, startDestination = BottomNavItem.Home.route, modifier = modifier) {
             composable(BottomNavItem.Home.route) {
-                HomeScreen(launches = launches, navController = navController) {
+                HomeScreen(launchesList = launchesList, navController = navController) {
                     viewModel.loadData()
                 }
             }
-            composable(BottomNavItem.Search.route) { SearchScreen() }
+            composable(BottomNavItem.Search.route) { SearchScreen(navController = navController, launchesList = launchesList) }
             composable(BottomNavItem.Store.route) { StoreScreen() }
 
             composable(
@@ -100,7 +110,7 @@ fun NavigationGraph(
                 arguments = listOf(navArgument("flightNumber") { type = NavType.IntType })
             ) { backStackEntry ->
                 val flightNumber = backStackEntry.arguments?.getInt("flightNumber")
-                val launch = launches.find { it.flight_number == flightNumber }
+                val launch = launchesList.find { it.flight_number == flightNumber }
                 launch?.let {
                     LaunchDetailsScreen(launch = launch)
                 }
