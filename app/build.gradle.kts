@@ -98,10 +98,11 @@ dependencies {
 
     // Room Database for offline storage
     implementation(libs.androidx.room.runtime)
+    //noinspection KaptUsageInsteadOfKsp
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
-    // Liddecycle management
+    // Lifecycle management
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx.v284)
 }
