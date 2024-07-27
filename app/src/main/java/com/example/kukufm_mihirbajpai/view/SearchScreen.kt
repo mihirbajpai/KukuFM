@@ -29,14 +29,17 @@ import androidx.navigation.NavController
 import com.example.kukufm_mihirbajpai.model.Launch
 import com.example.kukufm_mihirbajpai.ui.theme.BackgroundColor
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFMPrimary
+import com.example.kukufm_mihirbajpai.viewmodel.LaunchViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SearchScreen(
     launchesList: List<Launch>,
+    viewModel: LaunchViewModel,
     navController: NavController
 ) {
+    viewModel.getFavorites()
     val searchText = remember { mutableStateOf("") }
     val filteredLaunches = remember { mutableStateOf(launchesList) }
 
@@ -79,7 +82,7 @@ fun SearchScreen(
         }
 
         if (searchText.value.isNotEmpty()) {
-            LaunchesList(filteredLaunches.value, navController)
+            LaunchesList(filteredLaunches.value, viewModel = viewModel, navController =  navController)
         } else {
             Box(
                 modifier = Modifier.fillMaxSize(),

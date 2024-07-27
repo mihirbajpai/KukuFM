@@ -17,10 +17,14 @@ class LaunchViewModel @Inject constructor(private val repository: LaunchReposito
     private val _launches = MutableLiveData<List<Launch>>()
     val launches: LiveData<List<Launch>> get() = _launches
 
+    private val _favorites = MutableLiveData<List<Int>>()
+    val favorites: LiveData<List<Int>> get() = _favorites
+
     val isLoading = MutableLiveData(true)
 
     init {
         loadData()
+        getFavorites()
     }
 
     fun loadData(){
@@ -34,5 +38,27 @@ class LaunchViewModel @Inject constructor(private val repository: LaunchReposito
             }
             isLoading.value = false
         }
+    }
+
+    fun getFavorites(){
+        viewModelScope.launch {
+            _favorites.value = repository.getFavorites().map { it.flightNumber }
+        }
+    }
+    fun addFavorite(flightNumber: Int) {
+        viewModelScope.launch {
+            repository.addFavorite(flightNumber)
+            Log.d("LaunchViewModel", "${favorites.value}")
+        }
+    }
+
+    fun removeFavorite(flightNumber: Int) {
+        viewModelScope.launch {
+            repository.removeFavorite(flightNumber)
+        }
+    }
+
+    fun isFavorite(flightNumber: Int): Boolean {
+        return _favorites.value?.contains(flightNumber) == true
     }
 }

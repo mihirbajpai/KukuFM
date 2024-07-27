@@ -28,6 +28,7 @@ import com.example.kukufm_mihirbajpai.ui.theme.KukuFMPrimary
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFmMihirBajpaiTheme
 import com.example.kukufm_mihirbajpai.view.BottomNavItem
 import com.example.kukufm_mihirbajpai.view.BottomNavigationBar
+import com.example.kukufm_mihirbajpai.view.FavoriteScreen
 import com.example.kukufm_mihirbajpai.view.HomeScreen
 import com.example.kukufm_mihirbajpai.view.LaunchDetailsScreen
 import com.example.kukufm_mihirbajpai.view.SearchScreen
@@ -60,7 +61,7 @@ fun AppContainer(
     val navController = rememberNavController()
     val isLoading by viewModel.isLoading.observeAsState(true)
     Scaffold(
-        topBar = { TopBar(navController) },
+        topBar = { TopBar(navController = navController) },
         bottomBar = {
             if (!isLoading) BottomNavigationBar(navController)
         }
@@ -98,11 +99,21 @@ fun NavigationGraph(
     } else {
         NavHost(navController, startDestination = BottomNavItem.Home.route, modifier = modifier) {
             composable(BottomNavItem.Home.route) {
-                HomeScreen(launchesList = launchesList, navController = navController) {
+                HomeScreen(
+                    viewModel = viewModel,
+                    launches = launchesList,
+                    navController = navController
+                ) {
                     viewModel.loadData()
                 }
             }
-            composable(BottomNavItem.Search.route) { SearchScreen(navController = navController, launchesList = launchesList) }
+            composable(BottomNavItem.Search.route) {
+                SearchScreen(
+                    navController = navController,
+                    viewModel = viewModel,
+                    launchesList = launchesList
+                )
+            }
             composable(BottomNavItem.Store.route) { StoreScreen() }
 
             composable(
@@ -114,6 +125,14 @@ fun NavigationGraph(
                 launch?.let {
                     LaunchDetailsScreen(launch = launch)
                 }
+            }
+            composable("favorite_screen") {
+                viewModel.getFavorites()
+                FavoriteScreen(
+                    launchesList = launchesList,
+                    navController = navController,
+                    viewModel = viewModel
+                )
             }
         }
     }

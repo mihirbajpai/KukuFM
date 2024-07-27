@@ -27,7 +27,10 @@ fun BottomNavigationBar(navController: NavHostController) {
         BottomNavItem.Store
     )
     val currentRoute = currentRoute(navController)
-    if (currentRoute?.contains("detail_screen") != true ) BottomNavigation {
+    if (
+        currentRoute?.contains("detail_screen") != true &&
+        currentRoute?.contains("favorite_screen") != true
+    ) BottomNavigation {
         items.forEach { item ->
             val isSelected = currentRoute == item.route
             BottomNavigationItem(

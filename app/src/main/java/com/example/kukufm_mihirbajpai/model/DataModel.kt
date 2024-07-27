@@ -1,5 +1,8 @@
 package com.example.kukufm_mihirbajpai.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 data class Launch(
     val flight_number: Int,
     val mission_name: String,
@@ -42,4 +45,9 @@ data class Links(
     val article_link: String?,
     val wikipedia: String?,
     val video_link: String?,
+)
+
+@Entity(tableName = "favorites")
+data class FavoriteLaunch(
+    @PrimaryKey val flightNumber: Int
 )
