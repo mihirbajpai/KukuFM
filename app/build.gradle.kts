@@ -66,7 +66,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
-    implementation("androidx.compose.material:material:1.6.8")
+    implementation(libs.androidx.material)
     implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -76,27 +76,32 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("androidx.webkit:webkit:1.11.0")
-    implementation("com.google.accompanist:accompanist-webview:0.28.0")
+    // Web view
+    implementation(libs.webkit)
+    implementation(libs.accompanist.webview)
 
     // Dagger Hilt
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
 
     // Retrofit for API calls
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 
-    implementation ("io.coil-kt:coil-compose:2.4.0")
+    // For display image
+    implementation(libs.coil.compose)
 
-    implementation ("com.google.accompanist:accompanist-swiperefresh:0.28.0")
+    // Swipe to refresh
+    implementation(libs.accompanist.swiperefresh)
 
-    implementation ("androidx.room:room-runtime:2.6.1")
-    kapt ("androidx.room:room-compiler:2.6.1")
-    implementation ("androidx.room:room-ktx:2.6.1")
+    // Room Database for offline storage
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
-    implementation ("androidx.core:core-ktx:1.13.1")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
+    // Liddecycle management
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx.v284)
 }
