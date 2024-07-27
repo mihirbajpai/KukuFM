@@ -25,9 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Gray
@@ -90,6 +88,8 @@ fun LaunchesList(
 
 @Composable
 fun LaunchItem(launch: Launch, viewModel: LaunchViewModel, onClick: () -> Unit) {
+    val isFavorite by viewModel.isFavoriteLiveData(launch.flight_number).observeAsState(false)
+
     Box(
         modifier = Modifier
             .padding(8.dp)
@@ -135,32 +135,30 @@ fun LaunchItem(launch: Launch, viewModel: LaunchViewModel, onClick: () -> Unit) 
                 )
             }
         }
-        var isFavorite by remember { mutableStateOf(viewModel.isFavorite(launch.flight_number)) }
-
         IconButton(
             onClick = {
-                isFavorite = !isFavorite
                 if (isFavorite) {
-                    viewModel.addFavorite(launch.flight_number)
-                } else {
                     viewModel.removeFavorite(launch.flight_number)
+                } else {
+                    viewModel.addFavorite(launch.flight_number)
                 }
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .offset(x = (-20).dp, y = 16.dp)
                 .background(White, CircleShape)
-                .size(28.dp) // Adjust the size to reduce the background circle
+                .size(28.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.Favorite,
                 contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
                 tint = if (isFavorite) Red else Gray,
-                modifier = Modifier.size(20.dp) // Adjust the size to fit within the smaller background
+                modifier = Modifier.size(20.dp)
             )
         }
     }
 }
+
 
 @Composable
 fun ShowText(

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kukufm_mihirbajpai.model.Launch
+import com.example.kukufm_mihirbajpai.model.LocalLaunch
 import com.example.kukufm_mihirbajpai.repository.LaunchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -58,7 +59,22 @@ class LaunchViewModel @Inject constructor(private val repository: LaunchReposito
         }
     }
 
-    fun isFavorite(flightNumber: Int): Boolean {
-        return _favorites.value?.contains(flightNumber) == true
+    fun isFavoriteLiveData(flightNumber: Int): LiveData<Boolean> {
+        return repository.isFavorite(flightNumber)
+    }
+
+    fun getAllLocalData(onSuccess: (List<LocalLaunch>)->Unit) {
+        isLoading.value = true
+        viewModelScope.launch {
+            val localData = repository.getAllLocalData()
+            onSuccess(localData)
+            isLoading.value = false
+        }
+    }
+
+    fun insertLocalData(data: LocalLaunch){
+        viewModelScope.launch {
+            repository.insertData(data)
+        }
     }
 }

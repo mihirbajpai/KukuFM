@@ -1,5 +1,6 @@
 package com.example.kukufm_mihirbajpai.view
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -17,7 +18,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -26,8 +29,9 @@ import com.example.kukufm_mihirbajpai.ui.theme.KukuFMSecondary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(navController: NavHostController ) {
+fun TopBar(navController: NavHostController, isFavoriteEnable: Boolean) {
     val currentRoute = currentRoute(navController)
+    val context = LocalContext.current
     TopAppBar(
         title = {
             Row(
@@ -36,7 +40,7 @@ fun TopBar(navController: NavHostController ) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.kuku_fm_logo), // Replace with your drawable resource ID
+                    painter = painterResource(id = R.drawable.kuku_fm_logo),
                     contentDescription = "Menu",
                     modifier = Modifier
                         .size(60.dp)
@@ -48,6 +52,8 @@ fun TopBar(navController: NavHostController ) {
                         BottomNavItem.Search.route -> "Search"
                         BottomNavItem.Store.route -> "Store"
                         "detail_screen/{flightNumber}" -> "Details"
+                        "favorite_screen" -> "Your Favorite's"
+                        "offline_screen"-> "Offline Home"
                         else -> "App"
                     },
                     color = Color.White,
@@ -55,12 +61,21 @@ fun TopBar(navController: NavHostController ) {
                 )
                 IconButton(
                     onClick = {
-                        navController.navigate("favorite_screen")
-                    }
+                        if (isFavoriteEnable && currentRoute != "favorite_screen") {
+                            navController.navigate("favorite_screen")
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Please connect to te internet!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    },
+                    modifier = Modifier.alpha(if (currentRoute != "favorite_screen") 0f else 1f)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Favorite,
-                        contentDescription = "favorites" ,
+                        contentDescription = "favorites",
                         tint = Color.Red,
                         modifier = Modifier.size(28.dp)
                     )

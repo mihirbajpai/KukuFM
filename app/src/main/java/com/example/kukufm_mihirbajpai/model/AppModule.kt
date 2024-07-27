@@ -44,8 +44,13 @@ object AppModule {
     }
 
     @Provides
-    fun provideLaunchRepository(apiService: SpaceXApiService, favoriteLaunchDao: FavoriteLaunchDao): LaunchRepository {
-        return LaunchRepository(apiService, favoriteLaunchDao)
+    fun provideLocalLaunchDao(db: AppDatabase): LocalLaunchDao {
+        return db.localLaunchDao()
+    }
+
+    @Provides
+    fun provideLaunchRepository(apiService: SpaceXApiService, favoriteLaunchDao: FavoriteLaunchDao, localLaunchDao: LocalLaunchDao): LaunchRepository {
+        return LaunchRepository(apiService, favoriteLaunchDao, localLaunchDao)
     }
 }
 

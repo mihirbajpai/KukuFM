@@ -51,3 +51,11 @@ data class Links(
 data class FavoriteLaunch(
     @PrimaryKey val flightNumber: Int
 )
+
+@Entity(tableName = "local_data")
+data class LocalLaunch(
+    @PrimaryKey val flight_number: Int,
+    val mission_name: String,
+    val launch_year: String,
+    val rocket_name: String,
+)

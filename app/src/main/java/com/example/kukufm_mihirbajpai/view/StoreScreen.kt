@@ -6,6 +6,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
@@ -16,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 
@@ -27,7 +29,6 @@ fun StoreScreen() {
     val context = LocalContext.current
     val webView = remember { WebView(context) }
 
-    // Load URL if not already loaded
     LaunchedEffect(Unit) {
         if (webViewState.value == null) {
             webView.loadUrl("https://www.spacex.com/vehicles/falcon-9/")
@@ -35,7 +36,7 @@ fun StoreScreen() {
     }
 
     Scaffold {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
             AndroidView(
                 factory = {
                     webView.apply {
