@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.kukufm_mihirbajpai.ui.Store
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFMPrimary
 
 @Composable
@@ -68,6 +69,7 @@ fun BottomNavigationBar(navController: NavHostController) {
     }
 }
 
+// Returns current screen route
 @Composable
 fun currentRoute(navController: NavHostController): String? {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -75,7 +77,7 @@ fun currentRoute(navController: NavHostController): String? {
 }
 
 sealed class BottomNavItem(val title: String, val icon: ImageVector, val route: String) {
-    object Home : BottomNavItem("Home", Icons.Default.Home, "home")
-    object Search : BottomNavItem("Search", Icons.Default.Search, "search")
-    object Store : BottomNavItem("Store", Icons.Default.Store, "store")
+    data object Home : BottomNavItem("Home", Icons.Default.Home, "home")
+    data object Search : BottomNavItem("Search", Icons.Default.Search, "search")
+    data object Store : BottomNavItem("Store", Icons.Default.Store, "store")
 }

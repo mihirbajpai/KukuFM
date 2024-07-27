@@ -1,4 +1,4 @@
-package com.example.kukufm_mihirbajpai.model
+package com.example.kukufm_mihirbajpai.model.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -47,11 +47,13 @@ data class Links(
     val video_link: String?,
 )
 
+// For favorites
 @Entity(tableName = "favorites")
 data class FavoriteLaunch(
     @PrimaryKey val flightNumber: Int
 )
 
+// For offline screen
 @Entity(tableName = "local_data")
 data class LocalLaunch(
     @PrimaryKey val flight_number: Int,

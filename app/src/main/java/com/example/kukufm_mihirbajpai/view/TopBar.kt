@@ -25,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.kukufm_mihirbajpai.R
+import com.example.kukufm_mihirbajpai.Routes
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFMSecondary
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,9 +52,9 @@ fun TopBar(navController: NavHostController, isFavoriteEnable: Boolean) {
                         BottomNavItem.Home.route -> "Home"
                         BottomNavItem.Search.route -> "Search"
                         BottomNavItem.Store.route -> "Store"
-                        "detail_screen/{flightNumber}" -> "Details"
-                        "favorite_screen" -> "Your Favorite's"
-                        "offline_screen"-> "Offline Home"
+                        Routes.Details.route -> "Details"
+                        Routes.Favorite.route -> "Your Favorite's"
+                        Routes.Offline.route -> "Offline Home"
                         else -> "App"
                     },
                     color = Color.White,
@@ -61,17 +62,19 @@ fun TopBar(navController: NavHostController, isFavoriteEnable: Boolean) {
                 )
                 IconButton(
                     onClick = {
-                        if (isFavoriteEnable && currentRoute != "favorite_screen") {
-                            navController.navigate("favorite_screen")
+                        if (currentRoute == Routes.Favorite.route) {
+                            Unit    //Do nothing
+                        } else if (isFavoriteEnable) {
+                            navController.navigate(Routes.Favorite.route)
                         } else {
                             Toast.makeText(
                                 context,
-                                "Please connect to te internet!",
+                                "Please connect to the internet!",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
                     },
-                    modifier = Modifier.alpha(if (currentRoute != "favorite_screen") 0f else 1f)
+                    modifier = Modifier.alpha(if (currentRoute == Routes.Favorite.route) 0f else 1f)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Favorite,

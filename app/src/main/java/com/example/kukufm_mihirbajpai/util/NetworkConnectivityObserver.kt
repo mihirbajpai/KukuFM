@@ -6,8 +6,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.lifecycle.LiveData
 
+// Handles network state changes
 class NetworkConnectivityObserver(private val context: Context) : LiveData<Boolean>() {
-
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             // Update network connectivity status here

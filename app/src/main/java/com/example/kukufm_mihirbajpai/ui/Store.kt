@@ -1,4 +1,4 @@
-package com.example.kukufm_mihirbajpai.view
+package com.example.kukufm_mihirbajpai.ui
 
 /*
  * Copyright 2023 The Android Open Source Project

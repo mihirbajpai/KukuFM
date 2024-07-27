@@ -1,7 +1,11 @@
-package com.example.kukufm_mihirbajpai.model
+package com.example.kukufm_mihirbajpai.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.kukufm_mihirbajpai.model.local.AppDatabase
+import com.example.kukufm_mihirbajpai.model.local.FavoriteLaunchDao
+import com.example.kukufm_mihirbajpai.model.local.LocalLaunchDao
+import com.example.kukufm_mihirbajpai.model.remote.SpaceXApiService
 import com.example.kukufm_mihirbajpai.repository.LaunchRepository
 import dagger.Module
 import dagger.Provides
@@ -16,10 +20,13 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    private const val BASE_URL = "https://api.spacexdata.com/v3/"
+    private const val DATABASE_NAME = "launches_database"
+
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl("https://api.spacexdata.com/v3/")
+        .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -34,7 +41,7 @@ object AppModule {
         return Room.databaseBuilder(
             context.applicationContext,
             AppDatabase::class.java,
-            "launches_database"
+            DATABASE_NAME
         ).build()
     }
 
@@ -49,7 +56,11 @@ object AppModule {
     }
 
     @Provides
-    fun provideLaunchRepository(apiService: SpaceXApiService, favoriteLaunchDao: FavoriteLaunchDao, localLaunchDao: LocalLaunchDao): LaunchRepository {
+    fun provideLaunchRepository(
+        apiService: SpaceXApiService,
+        favoriteLaunchDao: FavoriteLaunchDao,
+        localLaunchDao: LocalLaunchDao
+    ): LaunchRepository {
         return LaunchRepository(apiService, favoriteLaunchDao, localLaunchDao)
     }
 }

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.kukufm_mihirbajpai.view
 
 import androidx.compose.foundation.background
@@ -32,6 +34,7 @@ import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,7 +42,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.kukufm_mihirbajpai.R
-import com.example.kukufm_mihirbajpai.model.Launch
+import com.example.kukufm_mihirbajpai.model.data.Launch
 import com.example.kukufm_mihirbajpai.ui.theme.BackgroundColor
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFMPrimary
 import com.example.kukufm_mihirbajpai.ui.theme.Purple40
@@ -99,7 +102,7 @@ fun LaunchItem(launch: Launch, viewModel: LaunchViewModel, onClick: () -> Unit) 
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { onClick() },
-            elevation = 4.dp,
+            elevation = 8.dp,
             shape = MaterialTheme.shapes.medium,
             backgroundColor = White
         ) {
@@ -113,12 +116,12 @@ fun LaunchItem(launch: Launch, viewModel: LaunchViewModel, onClick: () -> Unit) 
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     ShowText(
-                        heading = "Launch Year: ",
+                        heading = stringResource(R.string.launch_year),
                         text = launch.launch_year
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     ShowText(
-                        heading = "Rocket: ",
+                        heading = stringResource(R.string.rocket),
                         text = launch.rocket.rocket_name
                     )
                 }
@@ -151,7 +154,9 @@ fun LaunchItem(launch: Launch, viewModel: LaunchViewModel, onClick: () -> Unit) 
         ) {
             Icon(
                 imageVector = Icons.Default.Favorite,
-                contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                contentDescription = if (isFavorite) stringResource(R.string.remove_from_favorites) else stringResource(
+                    R.string.add_to_favorites
+                ),
                 tint = if (isFavorite) Red else Gray,
                 modifier = Modifier.size(20.dp)
             )

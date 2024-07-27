@@ -9,11 +9,13 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.kukufm_mihirbajpai.model.Launch
+import com.example.kukufm_mihirbajpai.R
+import com.example.kukufm_mihirbajpai.model.data.Launch
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFMPrimary
 import com.example.kukufm_mihirbajpai.viewmodel.LaunchViewModel
 
@@ -29,11 +31,13 @@ fun FavoriteScreen(
     }
     if (favoriteLaunches.isEmpty()) {
         Box(
-            modifier = Modifier.fillMaxSize().background(Color.White),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(White),
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Favorites is empty!",
+                text = stringResource(R.string.favorites_is_empty),
                 color = KukuFMPrimary,
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
@@ -41,6 +45,7 @@ fun FavoriteScreen(
             )
         }
     } else {
+        // Reusing HomeScreen LaunchesList
         LaunchesList(
             launchesList = favoriteLaunches,
             navController = navController,

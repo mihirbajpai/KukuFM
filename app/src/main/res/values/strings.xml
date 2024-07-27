@@ -1,3 +1,36 @@
 <resources>
     <string name="app_name">KukuFm - Mihir Bajpai</string>
+    <string name="launch_year">"Launch Year: "</string>
+    <string name="rocket">"Rocket: "</string>
+    <string name="remove_from_favorites">Remove from favorites</string>
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="mission_name">Mission Name: %1$s</string>
+    <string name="launch_date">"Launch Date: "</string>
+    <string name="launch_site">"Launch Site: "</string>
+    <string name="launch_success">"Launch Success: "</string>
+    <string name="rocket_id">"Rocket ID: "</string>
+    <string name="rocket_name">"Rocket Name: "</string>
+    <string name="rocket_type">"Rocket Type: "</string>
+    <string name="rocket_details">Rocket Details</string>
+    <string name="launch_details">Launch Details:</string>
+    <string name="payload">Payload</string>
+    <string name="reused">"Reused: "</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="nationality">"Nationality: "</string>
+    <string name="manufacturer">"Manufacturer: "</string>
+    <string name="payload_type">"Payload Type: "</string>
+    <string name="mass_kg">"Mass (kg): "</string>
+    <string name="orbit">"Orbit: "</string>
+    <string name="n_a">N/A</string>
+    <string name="payloads">Payloads</string>
+    <string name="important_links">Important Links</string>
+    <string name="article_link">Article Link</string>
+    <string name="video_link">Video Link</string>
+    <string name="wikipedia_link">Wikipedia Link</string>
+    <string name="you_are_back_online">You are back online.</string>
+    <string name="you_are_offline">You are offline!</string>
+    <string name="search">Search...</string>
+    <string name="type_to_search">Type to search...</string>
+    <string name="favorites_is_empty">Favorites is empty!</string>
 </resources>

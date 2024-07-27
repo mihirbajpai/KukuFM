@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -20,13 +21,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.DarkGray
+import androidx.compose.ui.graphics.Color.Companion.LightGray
+import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.kukufm_mihirbajpai.model.Launch
+import com.example.kukufm_mihirbajpai.R
+import com.example.kukufm_mihirbajpai.model.data.Launch
 import com.example.kukufm_mihirbajpai.ui.theme.BackgroundColor
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFMPrimary
 import com.example.kukufm_mihirbajpai.viewmodel.LaunchViewModel
@@ -53,8 +61,8 @@ fun SearchScreen(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
-                .border(1.dp, Color.Black, RoundedCornerShape(16.dp))
-                .background(Color.White)
+                .border(1.dp, Black, RoundedCornerShape(16.dp))
+                .background(White)
         ) {
             OutlinedTextField(
                 value = searchText.value,
@@ -62,34 +70,43 @@ fun SearchScreen(
                     searchText.value = newText
                     filteredLaunches.value = launchesList.filter { launch ->
                         launch.mission_name.contains(newText, ignoreCase = true) ||
-                        launch.launch_year.contains(newText, ignoreCase = true) ||
-                        launch.rocket.rocket_name.contains(newText, ignoreCase = true)
+                                launch.launch_year.contains(newText, ignoreCase = true) ||
+                                launch.rocket.rocket_name.contains(newText, ignoreCase = true)
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
-                        text = "Search...",
-                        color = Color.LightGray
+                        text = stringResource(R.string.search),
+                        color = LightGray
                     )
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    containerColor = Color.White
+                    containerColor = White
                 ),
-                textStyle = TextStyle(color = Color.DarkGray),
-                maxLines = 1
+                textStyle = TextStyle(color = DarkGray),
+                maxLines = 1,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
+                singleLine = true
             )
         }
 
         if (searchText.value.isNotEmpty()) {
-            LaunchesList(filteredLaunches.value, viewModel = viewModel, navController =  navController)
+            LaunchesList(
+                launchesList = filteredLaunches.value,
+                viewModel = viewModel,
+                navController = navController
+            )
         } else {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
-            ){
+            ) {
                 Text(
-                    text = "Type to search...",
+                    text = stringResource(R.string.type_to_search),
                     color = KukuFMPrimary,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,

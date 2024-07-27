@@ -1,4 +1,4 @@
-package com.example.kukufm_mihirbajpai.model
+package com.example.kukufm_mihirbajpai.model.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -6,6 +6,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.kukufm_mihirbajpai.model.data.FavoriteLaunch
+import com.example.kukufm_mihirbajpai.model.data.LocalLaunch
 
 @Dao
 interface FavoriteLaunchDao {
@@ -17,6 +19,7 @@ interface FavoriteLaunchDao {
 
     @Delete
     suspend fun removeFavorite(favoriteLaunch: FavoriteLaunch)
+
     @Query("SELECT COUNT(*) > 0 FROM favorites WHERE flightNumber = :flightNumber")
     fun isFavorite(flightNumber: Int): LiveData<Boolean>
 
@@ -25,7 +28,7 @@ interface FavoriteLaunchDao {
 }
 
 @Dao
-interface LocalLaunchDao{
+interface LocalLaunchDao {
     @Query("SELECT * FROM local_data")
     suspend fun getAllData(): List<LocalLaunch>
 

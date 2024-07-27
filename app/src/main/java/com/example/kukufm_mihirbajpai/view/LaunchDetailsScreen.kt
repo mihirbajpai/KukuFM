@@ -3,7 +3,6 @@ package com.example.kukufm_mihirbajpai.view
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.background
@@ -21,7 +20,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,9 +31,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -44,10 +43,13 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.kukufm_mihirbajpai.R
-import com.example.kukufm_mihirbajpai.model.Launch
+import com.example.kukufm_mihirbajpai.model.data.Launch
 import com.example.kukufm_mihirbajpai.ui.theme.BackgroundColor
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFMPrimary
 import com.example.kukufm_mihirbajpai.ui.theme.Purple100
+import com.example.kukufm_mihirbajpai.ui.theme.Purple40
+import com.example.kukufm_mihirbajpai.viewmodel.LaunchViewModel.Companion.TIME_FORMAT
+import com.example.kukufm_mihirbajpai.viewmodel.LaunchViewModel.Companion.TXT_PAYLOAD
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
@@ -64,23 +66,20 @@ fun LaunchDetailsScreen(launch: Launch) {
     ) {
         AsyncImage(
             model = ImageRequest.Builder(context)
-                .data(launch.links.mission_patch) // URL to image
-                .placeholder(R.drawable.ic_rocket) // Placeholder image
-                .error(R.drawable.ic_rocket) // Error image
+                .data(launch.links.mission_patch)
+                .placeholder(R.drawable.ic_rocket)
+                .error(R.drawable.ic_rocket)
                 .build(),
             contentDescription = "Mission Patch",
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp),
-            onError = {
-                Log.d("skdb", "${it.result.request}")
-            }
+                .height(200.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Mission Name: ${launch.mission_name}",
+            text = stringResource(R.string.mission_name, launch.mission_name),
             color = KukuFMPrimary,
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp
@@ -89,39 +88,47 @@ fun LaunchDetailsScreen(launch: Launch) {
         Spacer(modifier = Modifier.height(8.dp))
 
         ShowText(
-            heading = "Launch Date: ",
+            heading = stringResource(R.string.launch_date),
             text = convertDate(launch.launch_date_utc)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         ShowText(
-            heading = "Launch Site: ",
+            heading = stringResource(R.string.launch_site),
             text = launch.launch_site.site_name_long
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         ShowText(
-            heading = "Launch Success: ",
-            text = if (launch.launch_success != false) "Yes" else "No"
+            heading = stringResource(R.string.launch_success),
+            text = if (launch.launch_success != false) stringResource(R.string.yes) else stringResource(
+                R.string.no
+            )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         val rocketDetails = listOf(
-            Pair(first = "Rocket ID: ", second = launch.rocket.rocket_id),
-            Pair(first = "Rocket Name: ", second = launch.rocket.rocket_name),
-            Pair(first = "Rocket Type: ", second = launch.rocket.rocket_type)
+            Pair(first = stringResource(R.string.rocket_id), second = launch.rocket.rocket_id),
+            Pair(first = stringResource(R.string.rocket_name), second = launch.rocket.rocket_name),
+            Pair(first = stringResource(R.string.rocket_type), second = launch.rocket.rocket_type)
         )
-        ExpandableCard(heading = "Rocket Details", detailsItems = rocketDetails)
+        ExpandableCard(
+            heading = stringResource(R.string.rocket_details),
+            detailsItems = rocketDetails
+        )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         val detailsText = listOf(
             Pair(first = "", second = launch.details ?: "")
         )
-        ExpandableCard(heading = "Launch Details:", detailsItems = detailsText)
+        ExpandableCard(
+            heading = stringResource(R.string.launch_details),
+            detailsItems = detailsText
+        )
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -136,33 +143,33 @@ fun LaunchDetailsScreen(launch: Launch) {
                 Pair("Orbit: ", payload.orbit)
             )
         }
-        ExpandableCard(heading = "Payloads", detailsItems = payloadList)
+        ExpandableCard(heading = stringResource(R.string.payloads), detailsItems = payloadList)
 
         Spacer(modifier = Modifier.height(16.dp))
 
         launch.links.article_link?.let { link ->
             Text(
-                text = "Important Links",
+                text = stringResource(R.string.important_links),
                 color = KukuFMPrimary,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )
             Spacer(modifier = Modifier.height(8.dp))
-            ClickableUrlText(heading = "Article Link", url = link)
+            ClickableUrlText(heading = stringResource(R.string.article_link), url = link)
             Spacer(modifier = Modifier.height(4.dp))
         }
 
         Spacer(modifier = Modifier.height(8.dp))
 
         launch.links.video_link?.let { link ->
-            ClickableUrlText(heading = "Video Link", url = link)
+            ClickableUrlText(heading = stringResource(R.string.video_link), url = link)
             Spacer(modifier = Modifier.height(4.dp))
         }
 
         Spacer(modifier = Modifier.height(8.dp))
 
         launch.links.wikipedia?.let { link ->
-            ClickableUrlText(heading = "Wikipedia Link", url = link)
+            ClickableUrlText(heading = stringResource(R.string.wikipedia_link), url = link)
         }
     }
 }
@@ -224,11 +231,11 @@ fun ExpandableCard(
                 detailsItems.forEach { item ->
                     if (item.first != null && item.second != null) {
                         Spacer(modifier = Modifier.height(4.dp))
-                        if (item.first == "Payload") {
+                        if (item.first == TXT_PAYLOAD) {
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
                                 text = "${item.first} - ${item.second}:",
-                                color = MaterialTheme.colorScheme.primary,
+                                color = Purple40,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 18.sp,
                                 textDecoration = TextDecoration.Underline
@@ -253,12 +260,12 @@ fun ClickableUrlText(heading: String, url: String) {
     Row {
         Text(
             text = "$heading: ",
-            color = MaterialTheme.colorScheme.primary,
+            color = Purple40,
             fontWeight = FontWeight.Bold
         )
         Text(
             text = url,
-            color = Color.Blue,
+            color = Blue,
             modifier = Modifier.clickable {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 context.startActivity(intent)
@@ -270,15 +277,8 @@ fun ClickableUrlText(heading: String, url: String) {
 }
 
 fun convertDate(originalDate: String): String {
-    // Define the original format
     val originalFormatter = DateTimeFormatter.ISO_DATE_TIME
-
-    // Define the target format
-    val targetFormatter = DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")
-
-    // Parse the original date string
+    val targetFormatter = DateTimeFormatter.ofPattern(TIME_FORMAT)
     val zonedDateTime = ZonedDateTime.parse(originalDate, originalFormatter)
-
-    // Format the parsed date to the target format
     return zonedDateTime.format(targetFormatter)
 }

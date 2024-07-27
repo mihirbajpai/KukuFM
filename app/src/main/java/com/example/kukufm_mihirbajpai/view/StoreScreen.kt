@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 
+private const val URL = "https://www.spacex.com/vehicles/falcon-9/"
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -31,12 +32,15 @@ fun StoreScreen() {
 
     LaunchedEffect(Unit) {
         if (webViewState.value == null) {
-            webView.loadUrl("https://www.spacex.com/vehicles/falcon-9/")
+            webView.loadUrl(URL)
         }
     }
 
     Scaffold {
-        Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
             AndroidView(
                 factory = {
                     webView.apply {
@@ -48,10 +52,13 @@ fun StoreScreen() {
                     webViewState.value?.let {
                         webView.restoreState(it)
                     } ?: run {
-                        webView.loadUrl("https://www.spacex.com/vehicles/falcon-9/")
+                        webView.loadUrl(URL)
                     }
                 },
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black)
+
             )
         }
     }

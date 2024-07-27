@@ -31,8 +31,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.kukufm_mihirbajpai.model.Launch
-import com.example.kukufm_mihirbajpai.model.LocalLaunch
+import com.example.kukufm_mihirbajpai.model.data.Launch
+import com.example.kukufm_mihirbajpai.model.data.LocalLaunch
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFMPrimary
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFmMihirBajpaiTheme
 import com.example.kukufm_mihirbajpai.util.NetworkConnectivityObserver
@@ -47,6 +47,7 @@ import com.example.kukufm_mihirbajpai.view.SearchScreen
 import com.example.kukufm_mihirbajpai.view.StoreScreen
 import com.example.kukufm_mihirbajpai.view.TopBar
 import com.example.kukufm_mihirbajpai.viewmodel.LaunchViewModel
+import com.example.kukufm_mihirbajpai.viewmodel.LaunchViewModel.Companion.KEY_FLIGHT_NUMBER
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -75,7 +76,7 @@ fun AppContainer(
     val isLoading by viewModel.isLoading.observeAsState(true)
     val networkObserver = remember { NetworkConnectivityObserver(context) }
     val isOnline = networkObserver.observeAsState(NetworkUtils.isOnline(context))
-    Log.d("MainActivity1", "${isOnline.value}")
+    Log.d("MainActivity", "${isOnline.value}")
 
     Scaffold(
         topBar = {
@@ -85,7 +86,7 @@ fun AppContainer(
             )
         },
         bottomBar = {
-            if (!isLoading && isOnline.value) BottomNavigationBar(navController)
+            if (!isLoading && isOnline.value) BottomNavigationBar(navController = navController)
         }
     ) { innerPadding ->
         NavigationGraph(
@@ -114,7 +115,7 @@ fun NavigationGraph(
         launchesList = viewModel.launches.observeAsState(emptyList()).value
     }
 
-    // Load local data if online
+    // Store local data if online and local data is null
     LaunchedEffect(key1 = launchesList.size) {
         viewModel.getAllLocalData {
             localLaunchesList = it
@@ -147,8 +148,8 @@ fun NavigationGraph(
         }
     } else {
         NavHost(
-            navController,
-            startDestination = if (isOnline.value) BottomNavItem.Home.route else "offline_screen",
+            navController = navController,
+            startDestination = if (isOnline.value) BottomNavItem.Home.route else Routes.Offline.route,
             modifier = modifier
         ) {
             composable(BottomNavItem.Home.route) {
@@ -169,16 +170,16 @@ fun NavigationGraph(
             }
             composable(BottomNavItem.Store.route) { StoreScreen() }
             composable(
-                "detail_screen/{flightNumber}",
-                arguments = listOf(navArgument("flightNumber") { type = NavType.IntType })
+                Routes.Details.route,
+                arguments = listOf(navArgument(KEY_FLIGHT_NUMBER) { type = NavType.IntType })
             ) { backStackEntry ->
-                val flightNumber = backStackEntry.arguments?.getInt("flightNumber")
+                val flightNumber = backStackEntry.arguments?.getInt(KEY_FLIGHT_NUMBER)
                 val launch = launchesList.find { it.flight_number == flightNumber }
                 launch?.let {
                     LaunchDetailsScreen(launch = launch)
                 }
             }
-            composable("favorite_screen") {
+            composable(Routes.Favorite.route) {
                 viewModel.getFavorites()
                 FavoriteScreen(
                     launchesList = launchesList,
@@ -186,7 +187,7 @@ fun NavigationGraph(
                     viewModel = viewModel
                 )
             }
-            composable("offline_screen") {
+            composable(Routes.Offline.route) {
                 OfflineScreen(
                     localLaunches = localLaunchesList,
                     isOnline = isOnline,
@@ -195,4 +196,10 @@ fun NavigationGraph(
             }
         }
     }
+}
+
+sealed class Routes(val title: String, val route: String) {
+    data object Favorite : Routes("Favorite", "favorite_screen")
+    data object Offline : Routes("Offline", "offline_screen")
+    data object Details : Routes("Details", "detail_screen/{flightNumber}")
 }

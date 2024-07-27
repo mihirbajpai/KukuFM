@@ -24,17 +24,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kukufm_mihirbajpai.R
-import com.example.kukufm_mihirbajpai.model.LocalLaunch
+import com.example.kukufm_mihirbajpai.model.data.LocalLaunch
 import com.example.kukufm_mihirbajpai.ui.theme.BackgroundColor
 import com.example.kukufm_mihirbajpai.ui.theme.KukuFMPrimary
 import com.example.kukufm_mihirbajpai.viewmodel.LaunchViewModel
@@ -63,7 +63,9 @@ fun OfflineScreen(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = if (isOnline.value) "You are back online.." else "Please connect to te internet!",
+                    text = if (isOnline.value) stringResource(R.string.you_are_back_online) else stringResource(
+                        R.string.you_are_offline
+                    ),
                     color = White,
                     fontWeight = FontWeight.Bold
                 )
@@ -88,11 +90,13 @@ fun LocalLaunchItem(localLaunch: LocalLaunch) {
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    Toast.makeText(context, "Please connect to te internet!", Toast.LENGTH_SHORT).show()
+                    Toast
+                        .makeText(context, "Please connect to the internet!", Toast.LENGTH_SHORT)
+                        .show()
                 },
             elevation = 4.dp,
             shape = MaterialTheme.shapes.medium,
-            backgroundColor = Color.White
+            backgroundColor = White
         ) {
             Row(modifier = Modifier.padding(16.dp)) {
                 Column(modifier = Modifier.weight(1f)) {
@@ -104,19 +108,19 @@ fun LocalLaunchItem(localLaunch: LocalLaunch) {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     ShowText(
-                        heading = "Launch Year: ",
+                        heading = stringResource(R.string.launch_year),
                         text = localLaunch.launch_year
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     ShowText(
-                        heading = "Rocket: ",
+                        heading = stringResource(R.string.rocket),
                         text = localLaunch.rocket_name
                     )
                 }
                 Image(
                     painter = painterResource(R.drawable.ic_rocket),
                     contentDescription = "Offline Image",
-                    Modifier.size(48.dp)
+                    modifier = Modifier.size(48.dp)
                 )
             }
         }
